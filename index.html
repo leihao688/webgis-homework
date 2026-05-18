@@ -927,7 +927,7 @@ let horseMarkers=[], horseTimers=[], extraMarkers=[];
 
 // ═══════════════════════ INIT ═══════════════════════
 function initMap() { initRouteData();
-  map = L.map('map', {center:[22.78,100.97],zoom:8,zoomControl:false,attributionControl:true,scrollWheelZoom:true,dragging:true,maxBounds:[[13,78],[39,112]],maxBoundsViscosity:0.5});
+  map = L.map('map', {center:[22.78,100.97],zoom:8,zoomControl:false,attributionControl:true,scrollWheelZoom:true,dragging:true});
 
   // Amap (高德) tiles — better China coverage
   tLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
@@ -957,8 +957,9 @@ function initMap() { initRouteData();
     dimSegs.push(L.polyline(ROUTE.slice(SEG[i],endIdx),{color:'#d89a60',weight:3,opacity:0.75,dashArray:'10,18',lineCap:'round'}).addTo(map));
   }
   BRANCH.forEach(b=>branch.push(L.polyline(b,{color:'#9a8060',weight:1,opacity:0.15,dashArray:'4,10',interactive:false}).addTo(map)));
-  // 川藏南线
-  branch.push(L.polyline(ROUTE_CHUANZANG,{color:"#7ea8c0",weight:2.5,opacity:0.55,dashArray:"8,14",lineCap:"round",interactive:false}).addTo(map));
+  // 其他两条干线作为背景
+  branch.push(L.polyline(ROUTE_CHUANZANG,{color:"#7ea8c0",weight:2.5,opacity:0.45,dashArray:"8,14",lineCap:"round",interactive:false}).addTo(map));
+  branch.push(L.polyline(ROUTE_QINGZANG,{color:"#c0a870",weight:2.5,opacity:0.45,dashArray:"8,14",lineCap:"round",interactive:false}).addTo(map));
 
   const ics=['🍃','🏯','⛰️','🏔️','❄️','🕌'];
   const popLines=['普洱茶的发源地，马帮的起点','南诏故都，千年贸易枢纽','金沙江劈开玉龙与哈巴雪山','藏地高原门户，汉藏文化交汇','云南最高峰，藏区八大神山之首','雪域圣城，茶马古道终点'];
@@ -1431,8 +1432,9 @@ function pickStory(r){
     dimSegs.push(L.polyline(ROUTE.slice(SEG[i],endIdx),{color:'#d89a60',weight:3,opacity:0.75,dashArray:'10,18',lineCap:'round'}).addTo(map));
   }
   BRANCH.forEach(function(b){branch.push(L.polyline(b,{color:'#9a8060',weight:1,opacity:0.15,dashArray:'4,10',interactive:false}).addTo(map));});
-  branch.push(L.polyline(ROUTE_CHUANZANG,{color:'#7ea8c0',weight:2.5,opacity:0.55,dashArray:'8,14',lineCap:'round',interactive:false}).addTo(map));
-  branch.push(L.polyline(ROUTE_QINGZANG,{color:'#c0a870',weight:2.5,opacity:0.55,dashArray:'8,14',lineCap:'round',interactive:false}).addTo(map));
+  if(curRoute!=='dianzang') branch.push(L.polyline(ROUTE_DIANZANG,{color:'#c4864a',weight:2.5,opacity:0.45,dashArray:'8,14',lineCap:'round',interactive:false}).addTo(map));
+  if(curRoute!=='chuanzang') branch.push(L.polyline(ROUTE_CHUANZANG,{color:'#7ea8c0',weight:2.5,opacity:0.45,dashArray:'8,14',lineCap:'round',interactive:false}).addTo(map));
+  if(curRoute!=='qingzang') branch.push(L.polyline(ROUTE_QINGZANG,{color:'#c0a870',weight:2.5,opacity:0.45,dashArray:'8,14',lineCap:'round',interactive:false}).addTo(map));
   var ics=['🍃','🏯','⛰️','🏔️','❄️','🕌'];
   CH.forEach(function(ch,i){
     var icon=L.divIcon({className:'cm',iconSize:[36,36],iconAnchor:[18,18],html:'<span style="font-size:1.2rem;">'+ics[i%6]+'</span>'});
